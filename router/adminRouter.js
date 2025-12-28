@@ -9,6 +9,7 @@ import {
   authorizedRoles,
   isAuthenticated,
 } from "../middleware/authmiddleware.js";
+import { getAllUser } from "../controller/authController.js";
 
 const router = express.Router();
 
@@ -25,6 +26,8 @@ router.get(
   authorizedRoles("ADMIN"),
   getAllUsersAdmin
 );
+
+router.get("/user/:id", isAuthenticated, authorizedRoles("ADMIN"), getAllUser);
 
 router.put(
   "/users/:id/role",

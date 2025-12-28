@@ -44,7 +44,14 @@ export const getAllUsersAdmin = asyncErrorHandler(async (_req, res) => {
     users,
   });
 });
-
+export const getAllUser = asyncErrorHandler(async (_req, res) => {
+  const userId = _req.params.id;
+  const user = await User.findById(userId).select("-password");
+  res.status(200).json({
+    success: true,
+    user,
+  });
+});
 export const updateUserRole = asyncErrorHandler(async (req, res, next) => {
   // console.log(req);
   const { id } = req.params;
