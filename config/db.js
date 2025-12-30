@@ -2,12 +2,9 @@ import mongoose from "mongoose";
 
 const connectDB = async () => {
   try {
-    const conn = await mongoose.connect(
-      process.env.MONGODB_URI || process.env.DATABASE_URL,
-      {
-        // Remove deprecated options - mongoose 6+ handles these automatically
-      }
-    );
+    const conn = await mongoose.connect(process.env.MONGODB_URI, {
+      // Remove deprecated options - mongoose 6+ handles these automatically
+    });
     console.log(`MongoDB Connected: ${conn.connection.host}`);
   } catch (error) {
     console.error(`Error: ${error.message}`);
@@ -16,4 +13,3 @@ const connectDB = async () => {
 };
 
 export default connectDB;
-

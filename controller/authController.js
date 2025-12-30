@@ -53,12 +53,12 @@ export const loginUser = asyncErrorHandler(async (req, res, next) => {
     return next(new ErrorHandler("Invalid email or password", 401));
   }
 
-  const token = sendToken(user, 200, "token generated", res);
-  res.status(200).json({
-    success: true,
-    message: "Login successful",
-    token,
-  });
+  sendToken(user, 200, "token generated", res);
+  // res.status(200).json({
+  //   success: true,
+  //   message: "Login successful",
+  //   token,
+  // });
 });
 export const logoutUser = asyncErrorHandler(async (req, res, next) => {
   res
@@ -66,8 +66,9 @@ export const logoutUser = asyncErrorHandler(async (req, res, next) => {
     .cookie("token", "", {
       expires: new Date(0),
       httpOnly: true,
-      sameSite: "strict",
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
       secure: process.env.NODE_ENV === "production",
+      path: "/",
     })
     .json({
       success: true,
@@ -84,7 +85,7 @@ export const getuser = asyncErrorHandler(async (req, res, next) => {
   });
 });
 export const getAllUser = asyncErrorHandler(async (req, res, next) => {
-  const users = await User.find();
+  const users = await User.find().select("-password");
   res.status(200).json({
     message: "user loaded successfully",
     users,

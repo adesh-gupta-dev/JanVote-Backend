@@ -3,13 +3,13 @@ import {
   createUserByAdmin,
   deleteUserByAdmin,
   getAllUsersAdmin,
+  getUser,
   updateUserRole,
 } from "../controller/adminController.js";
 import {
   authorizedRoles,
   isAuthenticated,
 } from "../middleware/authmiddleware.js";
-import { getAllUser } from "../controller/authController.js";
 
 const router = express.Router();
 
@@ -27,7 +27,7 @@ router.get(
   getAllUsersAdmin
 );
 
-router.get("/user/:id", isAuthenticated, authorizedRoles("ADMIN"), getAllUser);
+router.get("/user/:id", isAuthenticated, authorizedRoles("ADMIN"), getUser);
 
 router.put(
   "/users/:id/role",

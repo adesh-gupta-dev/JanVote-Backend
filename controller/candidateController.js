@@ -3,6 +3,7 @@ import { asyncErrorHandler } from "../middleware/asyncErrorHandler.js";
 import { ErrorHandler } from "../middleware/errorMiddleware.js";
 import Candidate from "../models/Candidate.js";
 import Election from "../models/Election.js";
+import mongoose from "mongoose";
 
 // Add a candidate to an election
 export const createCandidate = asyncErrorHandler(async (req, res, next) => {
@@ -11,7 +12,9 @@ export const createCandidate = asyncErrorHandler(async (req, res, next) => {
   if (!name || !electionId) {
     return next(new ErrorHandler("name and electionId are required", 400));
   }
-
+  if (!mongoose.Types.ObjectId.isValid(electionId)) {
+    return next(new ErrorHandler("Invalid election ID", 400));
+  }
   const election = await Election.findById(electionId);
   if (!election) {
     return next(new ErrorHandler("Election not found", 404));

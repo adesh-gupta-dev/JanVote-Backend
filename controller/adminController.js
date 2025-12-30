@@ -44,7 +44,7 @@ export const getAllUsersAdmin = asyncErrorHandler(async (_req, res) => {
     users,
   });
 });
-export const getAllUser = asyncErrorHandler(async (_req, res) => {
+export const getUser = asyncErrorHandler(async (_req, res) => {
   const userId = _req.params.id;
   const user = await User.findById(userId).select("-password");
   res.status(200).json({
